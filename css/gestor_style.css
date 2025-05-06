@@ -7,6 +7,7 @@
 body{
     margin: 0;
     padding: 0;
+    background-color: gray;
 }
 header{
     background-color: #31518a;
@@ -31,10 +32,17 @@ aside{
     margin: 0;
     padding: 20;
     text-align: center;
+    float: left;
+
+    position: fixed;
+    left: 0;
+    top: 58;
+    bottom: 0
+    ;
 }
 section{
-    padding: 10;
     display: flex;
+    flex-wrap: wrap;
 }
 .tarea {
     border: 1px solid #ccc;
@@ -42,4 +50,5 @@ section{
     margin-bottom: 10px;
     border-radius: 8px;
     background-color: #f9f9f9;
+    margin: 10;
 }
