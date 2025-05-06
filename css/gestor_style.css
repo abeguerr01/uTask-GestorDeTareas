@@ -13,11 +13,13 @@ header{
     color: white;
     margin: 0;
     padding: 20;
-    text-align: center;
+    /*text-align: center;*/
 }
 header a{
     text-decoration: none;
     color: white;
+    padding: 7;
+    border-radius: 10cm;
 }
 header a:hover{
     background-color: white;
@@ -29,4 +31,15 @@ aside{
     margin: 0;
     padding: 20;
     text-align: center;
+}
+section{
+    padding: 10;
+    display: flex;
+}
+.tarea {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
 }
