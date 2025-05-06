@@ -34,15 +34,33 @@ aside{
     text-align: center;
     float: left;
 
+    width: 10%;
     position: fixed;
     left: 0;
     top: 58;
-    bottom: 0
-    ;
+    bottom: 0;
 }
 section{
+    width: 90%;
     display: flex;
+    float: right;
     flex-wrap: wrap;
+    flex-grow: 1;
+}
+#anadir{
+    background-color: white;
+    border: solid 1px #31518a;
+    border-radius: 2cm;
+    color: rgb(0, 0, 0);
+    margin: 0;
+    padding: 10;
+    text-align: center;
+    width: 100%;
+}
+#anadir:hover{
+    background-color: #31518a;
+    color: white;
+    border: solid 1px white;
 }
 .tarea {
     border: 1px solid #ccc;
