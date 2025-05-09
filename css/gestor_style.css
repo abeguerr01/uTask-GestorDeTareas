@@ -7,7 +7,9 @@
 body{
     margin: 0;
     padding: 1.55cm 0 0 0;
-    background-color: white;
+    background-image: url(../recursos/corcho-wallpaper.jpg);
+    background-size: cover;
+    /*background-color: white;*/
 }
 header{
     background-color: #31518a;
@@ -93,6 +95,7 @@ form{
 #tar-color-select {
   width: 100%;
   padding: 8px;
+  margin: 10 0 0 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: white;
