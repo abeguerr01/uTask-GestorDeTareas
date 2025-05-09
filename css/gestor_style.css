@@ -7,24 +7,25 @@
 body{
     margin: 0;
     padding: 1.55cm 0 0 0;
-    background-color: gray;
+    background-color: white;
 }
 header{
     background-color: #31518a;
     color: white;
     margin: 0;
-    padding: 20;
+    padding: 20px;
     height: 1.55cm;
 
     position: fixed;
     left: 0;
     top: 0;
     right: 0;
+    z-index: 1000;
 }
 header a{
     text-decoration: none;
     color: white;
-    padding: 7;
+    padding: 7px;
     border-radius: 10cm;
 }
 header a:hover{
@@ -34,54 +35,81 @@ header a:hover{
 aside{
     background-color: #4e648b;
     color: white;
-    margin: 0;
-    padding: 20;
+    padding: 20px;
     text-align: center;
     float: left;
 
     width: 20%;
     position: fixed;
     left: 0;
-    top: 58;
+    top: 58px;
     bottom: 0;
+    overflow-y: auto;
 }
-section{
+section#contenedor {
     width: 80%;
     display: flex;
     float: right;
     flex-wrap: wrap;
     flex-grow: 1;
+    padding: 10px;
 }
 form{
     background-color: yellowgreen;
-    padding: 15;
-
-    position: relative;
-    left: 0;
-    right: 0;
-
+    padding: 15px; 
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 #tar-tit{
     width: 100%;
-    height: 5%;
-    margin: 0 0 5 0;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 #tar-desc{
     width: 100%;
-    height: 15%;
-    margin: 5 0 0 0;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 60px;
+}
+.selector-opciones-color-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: #e0e0e0;
+  padding: 8px;
+  border-radius: 5px;
+}
+.selector-opciones-color-container label {
+  font-weight: bold;
+  color: #333;
+}
+#tar-color-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 1rem;
 }
 #anadir{
     background-color: white;
     border: solid 1px #31518a;
     border-radius: 2cm;
     color: rgb(0, 0, 0);
-    margin: 0;
-    padding: 10;
-    margin: 5 0;
+    padding: 10px;
+    margin: 5px 0;
     text-align: center;
     width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 #anadir:hover{
     background-color: #31518a;
@@ -93,32 +121,50 @@ form{
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 8px;
-    background-color: #f9f9f9;
-    margin: 10;
-    width: 5cm;
+    margin: 10px;
+    width: calc(25% - 20px);
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
 }
 .subdiv {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20;
+    flex-grow: 1;
 }
 .subdiv h3{
-    flex-grow: 1;
-    margin-bottom: 10;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+.subdiv h5 {
+    word-wrap: break-word;
 }
 .btn-eliminar{
     background-color: white;
-    border: solid 1px #31518a;
+    border: solid 1px black;
     border-radius: 2cm;
-    color: rgb(0, 0, 0);
-    margin: 0;
-    padding: 10;
-    margin: 5 0;
+    color: black;
+    padding: 10px;
+    margin-top: 10px;
     text-align: center;
     width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 .btn-eliminar:hover{
-    background-color: #31518a;
+    background-color: var(--tarea-color-fondo, #f9f9f9);
     color: white;
     border: solid 1px white;
+}
+.btn-eliminar.btn-hover-yellow-bg:hover {
+  background-color: var(--tarea-color-fondo, #FFD700);
+  color: black;
+  border: solid 1px black;
+}
+.btn-eliminar.btn-hover-black-bg:hover {
+  background-color: black;
+  color: white;
+  border: solid 1px white;
 }
