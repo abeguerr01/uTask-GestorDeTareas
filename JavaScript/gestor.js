@@ -1,52 +1,72 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const boton = document.getElementById('anadir');
-    const contenedor = document.getElementById('contenedor');
-    const tituloInput = document.getElementById('tar-tit');
-    const descripcionInput = document.getElementById('tar-desc');
-  
-    boton.addEventListener('click', () => {
-      const tituloTexto = tituloInput.value.trim();
-      const descripcionTexto = descripcionInput.value.trim();
-  
-      if (tituloTexto) {
-        // Crear el contenedor del nuevo elemento con clase "tarea"
-        const nuevoDiv = document.createElement('div');
-        nuevoDiv.classList.add('tarea');
-  
-        // Crear el título (h3)
-        const titulo = document.createElement('h2');
-        titulo.textContent = tituloTexto;
-  
-        // Añadir el título al div (siempre primero)
-        nuevoDiv.appendChild(titulo);
-  
-        // Crear la descripción (h5) solo si hay texto
-        if (descripcionTexto) {
+  const boton = document.getElementById('anadir');
+  const contenedor = document.getElementById('contenedor');
+  const inputTitulo = document.getElementById('tar-tit');
+  const inputDescripcion = document.getElementById('tar-desc');
+
+  // Cargar tareas guardadas
+  const tareasGuardadas = JSON.parse(localStorage.getItem('tareas')) || [];
+  tareasGuardadas.forEach(({ titulo, descripcion }) => {
+      crearTarea(titulo, descripcion);
+  });
+
+  // Añadir nueva tarea
+  boton.addEventListener('click', () => {
+      const titulo = inputTitulo.value.trim();
+      const descripcion = inputDescripcion.value.trim();
+
+      if (titulo) {
+          crearTarea(titulo, descripcion);
+          guardarTarea(titulo, descripcion);
+
+          inputTitulo.value = '';
+          inputDescripcion.value = '';
+      } else {
+          alert('El título es obligatorio.');
+      }
+  });
+
+  function crearTarea(tituloTexto, descripcionTexto) {
+      const tareaDiv = document.createElement('div');
+      tareaDiv.classList.add('tarea');
+
+      const subdiv = document.createElement('div');
+      subdiv.classList.add('subdiv');
+
+      const titulo = document.createElement('h3');
+      titulo.textContent = tituloTexto;
+
+      subdiv.appendChild(titulo);
+
+      if (descripcionTexto) {
           const descripcion = document.createElement('h5');
           descripcion.textContent = descripcionTexto;
-          nuevoDiv.appendChild(descripcion);
-        }
-  
-        // Crear el botón de eliminar
-        const botonEliminar = document.createElement('button');
-        botonEliminar.textContent = 'Eliminar';
-  
-        // Añadir funcionalidad al botón de eliminar
-        botonEliminar.addEventListener('click', () => {
-          contenedor.removeChild(nuevoDiv);
-        });
-  
-        // Agregar el botón de eliminar al div
-        nuevoDiv.appendChild(botonEliminar);
-  
-        // Agregar el nuevo div al contenedor principal
-        contenedor.appendChild(nuevoDiv);
-  
-        // Limpiar los campos del formulario
-        tituloInput.value = '';
-        descripcionInput.value = '';
-      } else {
-        alert('Por favor, introduce un título para la tarea.');
+          subdiv.appendChild(descripcion);
       }
-    });
-  });
+
+      const botonEliminar = document.createElement('button');
+      botonEliminar.textContent = 'Eliminar';
+      botonEliminar.classList.add('btn-eliminar');
+
+      botonEliminar.addEventListener('click', () => {
+          contenedor.removeChild(tareaDiv);
+          eliminarTarea(tituloTexto, descripcionTexto);
+      });
+
+      tareaDiv.appendChild(subdiv);
+      tareaDiv.appendChild(botonEliminar);
+      contenedor.appendChild(tareaDiv);
+  }
+
+  function guardarTarea(titulo, descripcion) {
+      const tareas = JSON.parse(localStorage.getItem('tareas')) || [];
+      tareas.push({ titulo, descripcion });
+      localStorage.setItem('tareas', JSON.stringify(tareas));
+  }
+
+  function eliminarTarea(titulo, descripcion) {
+      let tareas = JSON.parse(localStorage.getItem('tareas')) || [];
+      tareas = tareas.filter(t => t.titulo !== titulo || t.descripcion !== descripcion);
+      localStorage.setItem('tareas', JSON.stringify(tareas));
+  }
+});

@@ -95,4 +95,30 @@ form{
     border-radius: 8px;
     background-color: #f9f9f9;
     margin: 10;
+    width: 5cm;
+}
+.subdiv {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20;
+}
+.subdiv h3{
+    flex-grow: 1;
+    margin-bottom: 10;
+}
+.btn-eliminar{
+    background-color: white;
+    border: solid 1px #31518a;
+    border-radius: 2cm;
+    color: rgb(0, 0, 0);
+    margin: 0;
+    padding: 10;
+    margin: 5 0;
+    text-align: center;
+    width: 100%;
+}
+.btn-eliminar:hover{
+    background-color: #31518a;
+    color: white;
+    border: solid 1px white;
 }
