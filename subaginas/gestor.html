@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -13,21 +14,23 @@
             <aside>
                 <h2>Añadir tarea</h2>
                 <form>
-                    <input type="text" id="tar-tit" placeholder="Título"></input></br>
+                    <input type="text" id="tar-tit" placeholder="Título"></input><br>
                     <textarea id="tar-desc" placeholder="Descripción (Opcional)"></textarea>
-                    <select id="tar-color-select">
-                        <option value="#f9f9f9" style="background-color: #f9f9f9; color: black;">Blanco</option>
-                        <option value="#31518a" style="background-color: #31518a; color: white;">Azul</option>
-                        <option value="#FFD700" style="background-color: #FFD700; color: black;">Amarillo</option>
-                        <option value="#3CB371" style="background-color: #3CB371; color: white;">Verde</option>
-                        <option value="#DC3545" style="background-color: #DC3545; color: white;">Rojo</option>
-                    </select>
 
+                    <div class="selector-opciones-color-container">
+                        <label for="tar-color-select">Color de la tarea:</label>
+                        <select id="tar-color-select">
+                            <option value="#f9f9f9" style="background-color: #f9f9f9; color: black;">Blanco</option> 
+                            <option value="#31518a" style="background-color: #31518a; color: white;">Azul</option>
+                            <option value="#e7e552" style="background-color: #e7e552; color: black;">Amarillo</option>
+                            <option value="#3CB371" style="background-color: #3CB371; color: white;">Verde</option>
+                            <option value="#DC3545" style="background-color: #DC3545; color: white;">Rojo</option>
+                        </select>
+                    </div>
                 </form>
                 <button id="anadir">Añadir</button>
             </aside>
             <section id="contenedor">
-                <!-- Aqui van los divs -->
             </section>
         </main>
         <script src="../JavaScript/gestor.js"></script>

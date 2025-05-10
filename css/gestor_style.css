@@ -4,43 +4,44 @@
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
-body{
+body {
     margin: 0;
     padding: 1.55cm 0 0 0;
-    background-image: url(../recursos/corcho-wallpaper.jpg);
     background-size: cover;
-    /*background-color: white;*/
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-color: white;
+    min-height: 100vh;
 }
-header{
+header {
     background-color: #31518a;
     color: white;
     margin: 0;
     padding: 20px;
     height: 1.55cm;
-
     position: fixed;
     left: 0;
     top: 0;
     right: 0;
     z-index: 1000;
 }
-header a{
+header a {
     text-decoration: none;
     color: white;
     padding: 7px;
     border-radius: 10cm;
 }
-header a:hover{
+header a:hover {
     background-color: white;
     color: #31518a;
 }
-aside{
+aside {
     background-color: #4e648b;
     color: white;
     padding: 20px;
     text-align: center;
     float: left;
-
     width: 20%;
     position: fixed;
     left: 0;
@@ -56,20 +57,20 @@ section#contenedor {
     flex-grow: 1;
     padding: 10px;
 }
-form{
+form {
     background-color: yellowgreen;
     padding: 15px; 
     border-radius: 10px;
     margin-bottom: 10px;
 }
-#tar-tit{
+#tar-tit {
     width: 100%;
     padding: 8px;
     margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-#tar-desc{
+#tar-desc {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -79,30 +80,29 @@ form{
     min-height: 60px;
 }
 .selector-opciones-color-container {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  background-color: #e0e0e0;
-  padding: 8px;
-  border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: #e0e0e0;
+    padding: 8px;
+    border-radius: 5px;
 }
 .selector-opciones-color-container label {
-  font-weight: bold;
-  color: #333;
+    font-weight: bold;
+    color: #333;
 }
 #tar-color-select {
-  width: 100%;
-  padding: 8px;
-  margin: 10 0 0 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  cursor: pointer;
-  font-size: 1rem;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 1rem;
 }
-#anadir{
+#anadir {
     background-color: white;
     border: solid 1px #31518a;
     border-radius: 2cm;
@@ -114,7 +114,7 @@ form{
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
-#anadir:hover{
+#anadir:hover {
     background-color: #31518a;
     color: white;
     border: solid 1px white;
@@ -137,37 +137,103 @@ form{
     flex-direction: column;
     flex-grow: 1;
 }
-.subdiv h3{
+.subdiv h3 {
     margin-bottom: 10px;
     word-wrap: break-word;
 }
 .subdiv h5 {
     word-wrap: break-word;
 }
-.btn-eliminar{
+
+/* Contenedor de los botones dentro de la tarea */
+.button-container {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+    margin-top: 10px;
+}
+
+/* Estilos para el botón Editar (MISMO FORMATO QUE ELIMINAR) */
+.btn-editar {
+    background-color: white; /* Fondo blanco */
+    border: solid 1px black; /* Borde negro */
+    border-radius: 2cm; /* Bordes redondeados */
+    color: black; /* Texto negro */
+    padding: 10px; /* Espaciado interno */
+    text-align: center; /* Centrar texto */
+    flex-grow: 1; /* Crecer en el contenedor */
+    cursor: pointer; /* Cambiar cursor al pasar el mouse */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Transición suave */
+}
+.btn-editar.btn-hover-black-bg:hover {
+    background-color: black;
+    color: white;
+    border: solid 1px white;
+}
+/* Hover para el botón Editar cuando el fondo de la tarea es blanco */
+.btn-editar-blanco:hover {
+    background-color: black; /* Fondo negro en hover */
+    color: white; /* Texto blanco en hover */
+    border: solid 1px black; /* Borde negro en hover */
+}
+
+/* Hover para el botón Editar en otros casos */
+.btn-editar:hover {
+    background-color: var(--tarea-color-fondo, #f9f9f9); /* Color de fondo en hover */
+    color: white; /* Texto blanco en hover */
+    border: solid 1px white; /* Borde blanco en hover */
+}
+
+/* Estilos para el botón Guardar (cuando el botón de editar cambia a Guardar) */
+.btn-guardar {
+    background-color: #3cb371; /* Verde */
+    border: solid 1px #ffffff;
+    border-radius: 2cm;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    flex-grow: 1;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.btn-guardar:hover {
+    background-color: #2a7e4f;
+    border-color: #ffffff;
+}
+
+/* Estilos para el botón Eliminar */
+.btn-eliminar {
     background-color: white;
     border: solid 1px black;
     border-radius: 2cm;
     color: black;
     padding: 10px;
-    margin-top: 10px;
     text-align: center;
-    width: 100%;
+    flex-grow: 1;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
-.btn-eliminar:hover{
+
+.btn-eliminar:hover {
     background-color: var(--tarea-color-fondo, #f9f9f9);
     color: white;
     border: solid 1px white;
 }
 .btn-eliminar.btn-hover-yellow-bg:hover {
-  background-color: var(--tarea-color-fondo, #FFD700);
-  color: black;
-  border: solid 1px black;
+    background-color: var(--tarea-color-fondo, #e7e552);
+    color: white;
+    border: solid 1px white;
 }
 .btn-eliminar.btn-hover-black-bg:hover {
-  background-color: black;
-  color: white;
-  border: solid 1px white;
+    background-color: black;
+    color: white;
+    border: solid 1px white;
+}
+
+/* Indicador visual para elementos editables (título y descripción) */
+[contenteditable="true"] {
+    outline: 2px dashed #007bff; /* Borde azul punteado */
+    padding: 2px;
+    min-height: 1em; /* Asegura una altura mínima para elementos editables vacíos */
+    box-sizing: border-box; /* Para que el padding y el borde no aumenten el tamaño */
 }
