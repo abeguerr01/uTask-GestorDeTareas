@@ -26,6 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
             inputTitulo.value = '';
             inputDescripcion.value = '';
             selectColor.value = '#f9f9f9';
+
+            //Almacenado de tareas
+
+            const tarea = {
+                id: idtar,
+                titulo: titulo,
+                descripcion: descripcion,
+                color: color,
+                fecha: newId
+            }
+            
+            nombref = nombre
+            const userJsonFormattedString = JSON.stringify(userData, null, 2); // Indentación de 2 espacios
+            const userOutputFilename = 'saves/'+ nombref +'.json';
+
         } else {
             alert('El título es obligatorio.');
         }
