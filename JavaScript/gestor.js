@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fecha: newId
             }
             
-            nombref = nombre
+            let nombref = nombre
             const userJsonFormattedString = JSON.stringify(userData, null, 2); // Indentación de 2 espacios
             const userOutputFilename = 'saves/'+ nombref +'.json';
 
