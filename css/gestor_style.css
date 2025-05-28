@@ -25,6 +25,10 @@ header {
     top: 0;
     right: 0;
     z-index: 1000;
+
+    display: flex; /* <-- ¡ESTO ES CLAVE! */
+    justify-content: space-between; /* <-- ¡ESTO ES CLAVE! */
+    align-items: center;
 }
 header a {
     text-decoration: none;
@@ -236,4 +240,28 @@ form {
     padding: 2px;
     min-height: 1em; /* Asegura una altura mínima para elementos editables vacíos */
     box-sizing: border-box; /* Para que el padding y el borde no aumenten el tamaño */
+}
+/* Botones de Importar y Exportar */
+.header-buttons-right {
+    display: flex;
+    gap: 10px;
+}
+.imp-btn,
+.exp-btn {
+    background-color: #8b4e88;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    flex-grow: 1;
+    height: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center; /* Alinea el texto de estos botones al centro */
+}
+
+.imp-btn:hover,
+.exp-btn:hover {
+    background-color: #fb93ff;
+    transform: scale(1.015);
 }

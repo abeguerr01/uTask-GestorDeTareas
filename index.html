@@ -14,12 +14,15 @@
                 <button class="accd-btn" onclick="location.href='subpaginas/gestor.html'">ACCEDER</button>
             </div>
             <div class="imp-exp">
-                <button class="imp-btn">IMPORTAR TAREAS</button>
-                <button class="exp-btn">EXPORTAR TAREAS</button>
+                <button class="imp-btn" id="imp">IMPORTAR TAREAS</button>
+                <button class="exp-btn" id="exp">EXPORTAR TAREAS</button>
+                <input type="file" id="import-file-input" accept=".json" style="display: none;">
             </div>
         </main>
         <footer>
             <p>© 2023 uTASK. Todos los derechos reservados.</p>
         </footer>
+
+        <script * src="JavaScript/importar-exportar.js" ></script>
     </body>
 </html>
