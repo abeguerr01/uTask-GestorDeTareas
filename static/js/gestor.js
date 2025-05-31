@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('tareas', JSON.stringify(tareas));
     }
 
-/* ======================================================================================================================================== */
+    /* ======================================================================================================================================== */
 
     const importBtn = document.getElementById('imp');
     const exportBtn = document.getElementById('exp');
