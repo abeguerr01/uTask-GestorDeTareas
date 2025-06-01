@@ -1,73 +1,96 @@
+# main.py (Versión corregida y más robusta)
 import webview
-import threading
-import time
-import json # Para manejar datos JSON entre Python y JS
+import sqlite3
+import json
+import os
+
+# --- CONFIGURACIÓN DE LA BASE DE DATOS ---
+DB_FILE = 'data/tasks.db'
 
 # --- CLASE API PARA COMUNICACIÓN JAVASCRIPT <-> PYTHON ---
-# Esta clase expone métodos de Python que JavaScript puede llamar.
 class Api:
-    def __init__(self, window):
-        self.window = window
-        self.tasks = [] # Lista simple para simular la base de datos por ahora
+    def __init__(self): # No se necesita la ventana aquí si no la usas en la inicialización
+        self.window = None # Se asignará después si es necesario
+        self._initialize_db()
 
+    def set_window(self, window):
+        self.window = window # Asigna la ventana una vez que esté disponible
+
+    def _get_db_connection(self):
+        conn = sqlite3.connect(DB_FILE)
+        conn.row_factory = sqlite3.Row
+        return conn
+
+    def _initialize_db(self):
+        # Asegúrate de que la carpeta 'data' exista
+        os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
+        conn = self._get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                description TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+        print("Python: Base de datos SQLite inicializada y tabla 'tasks' creada/verificada.")
+
+    # ... (rest of your Api methods: get_tasks, add_task, update_task, delete_task, say_hello) ...
+    # Asegúrate de que estos métodos no usen self.window a menos que sea realmente necesario
+    # para operaciones que requieran la ventana (ej. mostrar un diálogo nativo).
+    # Para get/add/update/delete tasks, no necesitas la ventana.
     def get_tasks(self):
-        """Devuelve todas las tareas."""
-        print("Python: Solicitud de tareas recibida.")
-        # En un proyecto real, aquí harías una consulta a tu base de datos SQL
-        return json.dumps(self.tasks) # Devuelve las tareas como JSON string
+        # ... (código de get_tasks sin self.window) ...
+        print("Python: Solicitud de tareas recibida (DB).")
+        conn = self._get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id, title, description FROM tasks ORDER BY id DESC")
+        tasks = [dict(row) for row in cursor.fetchall()]
+        conn.close()
+        return json.dumps(tasks)
 
     def add_task(self, task_data):
-        """Añade una nueva tarea."""
-        print(f"Python: Solicitud para añadir tarea: {task_data}")
-        # task_data llega como un diccionario de JavaScript
-        self.tasks.append(task_data)
-        # Aquí harías una inserción en tu base de datos SQL
-        return json.dumps({"status": "success", "message": "Tarea añadida", "task": task_data})
+        # ... (código de add_task sin self.window) ...
+        title = task_data.get('title')
+        description = task_data.get('description', '')
+        if not title:
+            return json.dumps({"status": "error", "message": "Title cannot be empty"})
 
-    def update_task(self, task_id, new_data):
-        """Actualiza una tarea existente."""
-        print(f"Python: Solicitud para actualizar tarea {task_id} con {new_data}")
-        # Lógica para encontrar y actualizar la tarea en self.tasks
-        # o en tu base de datos SQL
-        for i, task in enumerate(self.tasks):
-            if task.get("id") == task_id: # Suponiendo que las tareas tienen un 'id'
-                self.tasks[i].update(new_data)
-                return json.dumps({"status": "success", "message": "Tarea actualizada"})
-        return json.dumps({"status": "error", "message": "Tarea no encontrada"})
-
-
-    def delete_task(self, task_id):
-        """Elimina una tarea."""
-        print(f"Python: Solicitud para eliminar tarea {task_id}")
-        initial_len = len(self.tasks)
-        self.tasks = [task for task in self.tasks if task.get("id") != task_id]
-        if len(self.tasks) < initial_len:
-            return json.dumps({"status": "success", "message": "Tarea eliminada"})
-        else:
-            return json.dumps({"status": "error", "message": "Tarea no encontrada"})
-
-
-    def say_hello(self, name):
-        """Método de ejemplo para probar la comunicación."""
-        print(f"Python: Hello, {name} from JavaScript!")
-        return f"Hola desde Python, {name}!"
+        conn = self._get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute('INSERT INTO tasks (title, description) VALUES (?, ?)', (title, description))
+            conn.commit()
+            task_id = cursor.lastrowid
+            new_task = {"id": task_id, "title": title, "description": description}
+            return json.dumps({"status": "success", "message": "Tarea añadida", "task": new_task})
+        except Exception as e:
+            conn.rollback()
+            return json.dumps({"status": "error", "message": str(e)})
+        finally:
+            conn.close()
+    # ... (y el resto de los métodos update_task, delete_task, say_hello)
 
 # --- FUNCIÓN PRINCIPAL PARA INICIAR LA APLICACIÓN ---
 def start_app():
-    # Cargar el HTML y el API de Python
-    window = webview.create_window(
-        'Mi Gestor de Tareas',
-        url='index.html',  # Carga tu archivo HTML
-        width=800,
-        height=600,
-        js_api=Api(webview.active_window) # Pasa una instancia de tu clase Api
-    )
+    # Crea una instancia de la API primero
+    my_api = Api()
 
-    # Iniciar la aplicación webview.
-    # debug=True es útil para ver los logs en la consola.
-    # http_server=True hace que pywebview inicie un servidor HTTP local
-    # para servir tus archivos estáticos (HTML, CSS, JS).
-    webview.start(debug=True, http_server=True)
+    window = webview.create_window(
+        'uTask - Gestor de Tareas',
+        url='index.html', # Asegúrate de que esta sea la ruta correcta a gestor.html
+                                             # O si prefieres, 'index.html' y que el usuario navegue.
+                                             # El último fragmento de main.py que me pasaste cargaba gestor.html directamente.
+        width=1000,
+        height=700,
+        js_api=my_api # Pasa la instancia de la API aquí
+    )
+    # Si la API NECESITA la ventana, la puedes asignar después:
+    # my_api.set_window(window) # Descomenta esto si tu API realmente usa self.window
+
+    webview.start(debug=True, http_server=True) # Mueve debug=True aquí
 
 if __name__ == '__main__':
     start_app()
