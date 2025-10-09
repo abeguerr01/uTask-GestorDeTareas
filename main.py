@@ -12,8 +12,8 @@ class Api:
 
     def init_db(self):
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
+        conn = sqlite3.connect(DB_PATH) # Conexión a la base de datos SQLite mediante su ruta
+        cursor = conn.cursor() # Crear un cursor para ejecutar comandos SQL
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS tasks (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, -- ¡CORRECCIÓN AQUÍ! Era 'PRIMARYORY KEY'
