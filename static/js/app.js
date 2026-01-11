@@ -5,6 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputTitulo = document.getElementById('tar-tit');
     const inputDescripcion = document.getElementById('tar-desc');
     const selectColor = document.getElementById('tar-color-select');
+    const btnCerrar = document.getElementById('btn-cerrar');
+
+    // Event listener para el botón de cerrar
+    if (btnCerrar) {
+        btnCerrar.addEventListener('click', async () => {
+            if (confirm('¿Estás seguro de que quieres cerrar la aplicación?')) {
+                try {
+                    if (window.pywebview && window.pywebview.api) {
+                        await window.pywebview.api.close_app();
+                    } else {
+                        // Fallback: intentar cerrar la ventana directamente
+                        window.close();
+                    }
+                } catch (error) {
+                    console.error('Error al cerrar la aplicación:', error);
+                    // Fallback: intentar cerrar la ventana directamente
+                    window.close();
+                }
+            }
+        });
+    }
 
     window.addEventListener('pywebviewready', async () => {
         console.log('pywebview está listo. Cargando tareas desde la base de datos...');
@@ -15,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Carga las tareas desde la base de datos a través de Python
      * y las renderiza en el DOM.
      */
-    async function loadTasks() {
+    window.loadTasks = async function loadTasks() {
         try {
             const tasksJson = await pywebview.api.get_tasks();
             const tasks = JSON.parse(tasksJson);
@@ -35,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al cargar tareas desde la base de datos:', error);
             contenedorTareas.innerHTML = `<p style="color: red;">No se pudieron cargar las tareas. Por favor, intente de nuevo más tarde.</p>`;
         }
-    }
+    };
 
     anadirBtn.addEventListener('click', async () => {
         const title = inputTitulo.value.trim();

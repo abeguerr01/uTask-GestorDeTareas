@@ -4,6 +4,12 @@
         <link rel="stylesheet" href="static/css/index_style.css" />
         <link rel="shortcut icon" href="static/recursos/logo.png" type="image/x-icon" />
         <title>uTASK</title>
+        <script>
+            // Redirigir automáticamente a gestor.html al cargar la página
+            window.addEventListener('DOMContentLoaded', () => {
+                window.location.href = 'static/subpaginas/gestor.html';
+            });
+        </script>
     </head>
     <body>
         <header>
@@ -11,18 +17,11 @@
         </header>
         <main>
             <div class="accd-div">
-                <button class="accd-btn" onclick="location.href='static/subpaginas/gestor.html'">ACCEDER</button>
-            </div>
-            <div class="imp-exp">
-                <button class="imp-btn" id="imp">IMPORTAR TAREAS</button>
-                <button class="exp-btn" id="exp">EXPORTAR TAREAS</button>
-                <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                <p>Cargando gestor de tareas...</p>
             </div>
         </main>
         <footer>
             <p>© 2025 uTASK. Todos los derechos reservados.</p>
         </footer>
-
-        <script * src="static/js/importar-exportar.js" ></script>
     </body>
 </html>

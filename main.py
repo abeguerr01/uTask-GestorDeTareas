@@ -2,6 +2,10 @@ import webview
 import json
 import sqlite3
 import os
+import shutil
+import traceback
+from tkinter import filedialog
+import tkinter as tk
 
 # Ruta de la base de datos
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'tasks.db')
@@ -72,11 +76,7 @@ class Api:
             cursor = conn.cursor()
             title = task_data.get('title')
             description = task_data.get('description')
-            # Si quisieras actualizar el color desde JS, lo harías aquí:
-            # color = task_data.get('color')
-            # if color:
-            #    cursor.execute("UPDATE tasks SET title = ?, description = ?, color = ? WHERE id = ?", (title, description, color, task_id))
-            # else:
+            
             cursor.execute("UPDATE tasks SET title = ?, description = ? WHERE id = ?", (title, description, task_id))
             conn.commit()
             conn.close()
@@ -102,53 +102,117 @@ class Api:
            
     def export_database(self):
         print("Solicitud de exportación de base de datos recibida.")
+        
         try:
-            # Obtener la ventana actual para usar save_file
-            # self.window se asigna en start_app si es necesario,
-            # pero webview.windows[0] es más directo si solo hay una ventana.
-            # Asegúrate de que webview.windows esté disponible cuando se llama a esto.
-            current_window = webview.windows[0] if webview.windows else None
-
-            if not current_window:
-                print("Error: No se encontró la ventana de PyWebView.")
-                return json.dumps({"status": "error", "message": "No se encontró la ventana de la aplicación."})
-
-            # Abre un diálogo para que el usuario elija dónde guardar el archivo
-            # El nombre de archivo por defecto será 'tasks_export.db'
-            # y el tipo de archivo será 'SQLite Database (*.db)'
-            result = current_window.save_file(
-                'Exportar Base de Datos',
-                file_name='tasks_export.db',
-                directory=os.path.expanduser('~'), # Directorio por defecto: carpeta de usuario
-                save_as_dialog=True, # Forzar el diálogo de guardar como
-                file_types=('SQLite Database (*.db)', 'All files (*.*)')
+            # Crear una ventana raíz oculta para tkinter
+            root = tk.Tk()
+            root.withdraw()  # Ocultar la ventana principal
+            
+            # Diálogo de GUARDAR archivo
+            save_path = filedialog.asksaveasfilename(
+                defaultextension=".db",
+                filetypes=[
+                    ("Base de datos SQLite", "*.db"),
+                    ("Todos los archivos", "*.*")
+                ],
+                initialdir=os.path.expanduser("~/Desktop"),
+                initialfile="utask_backup.db",
+                title="Guardar copia de seguridad"
             )
+            
+            root.destroy()  # Cerrar la ventana raíz
 
-            if result: # Si el usuario seleccionó una ruta
-                save_path = result
-                # Asegúrate de que la base de datos esté cerrada antes de copiarla
-                # Esto es crucial para evitar errores de bloqueo de archivo
-                try:
-                    # Cerrar la conexión actual a la DB si está abierta
-                    # (aunque get_db_connection cierra la conexión después de cada operación,
-                    # es una buena práctica asegurar que no haya bloqueos).
-                    # Para copiar el archivo, no necesitamos una conexión abierta.
-                    pass
-                except Exception as close_e:
-                    print(f"Advertencia: No se pudo cerrar una conexión previa a la DB: {close_e}")
+            # Si se cancela, save_path será una cadena vacía
+            if not save_path:
+                print("Exportación cancelada por el usuario")
+                return json.dumps({
+                    "status": "cancelled",
+                    "message": "Exportación cancelada por el usuario"
+                })
 
-                # Copiar el archivo de la base de datos a la ubicación elegida por el usuario
-                import shutil
-                shutil.copyfile(DB_PATH, save_path)
-                print(f"Base de datos exportada a: {save_path}")
-                return json.dumps({"status": "success", "message": f"Base de datos exportada a {save_path}"})
-            else:
-                print("Exportación de base de datos cancelada por el usuario.")
-                return json.dumps({"status": "cancelled", "message": "Exportación cancelada."})
+            print(f"Guardando en: {save_path}")
+            
+            # Copiamos la base de datos
+            shutil.copy2(DB_PATH, save_path)
+
+            return json.dumps({
+                "status": "success",
+                "message": f"Base de datos exportada correctamente a:\n{save_path}"
+            })
 
         except Exception as e:
-            print(f"Error al exportar la base de datos: {e}")
-            return json.dumps({"status": "error", "message": f"Error al exportar: {str(e)}"})
+            error_detail = traceback.format_exc()
+            print("ERROR completo al exportar:\n" + error_detail)
+            return json.dumps({
+                "status": "error",
+                "message": f"Error durante la exportación:\n{str(e)}"
+            })
+
+    def import_database(self):
+        print("Solicitud de importación de base de datos recibida.")
+        
+        try:
+            # Crear una ventana raíz oculta para tkinter
+            root = tk.Tk()
+            root.withdraw()  # Ocultar la ventana principal
+            
+            # Diálogo de ABRIR archivo
+            open_path = filedialog.askopenfilename(
+                filetypes=[
+                    ("Base de datos SQLite", "*.db"),
+                    ("Todos los archivos", "*.*")
+                ],
+                initialdir=os.path.expanduser("~/Desktop"),
+                title="Seleccionar archivo de base de datos para importar"
+            )
+            
+            root.destroy()  # Cerrar la ventana raíz
+
+            # Si se cancela, open_path será una cadena vacía
+            if not open_path:
+                print("Importación cancelada por el usuario")
+                return json.dumps({
+                    "status": "cancelled",
+                    "message": "Importación cancelada por el usuario"
+                })
+
+            print(f"Importando desde: {open_path}")
+            
+            # Verificamos que el archivo existe
+            if not os.path.exists(open_path):
+                return json.dumps({
+                    "status": "error",
+                    "message": f"El archivo no existe: {open_path}"
+                })
+            
+            # Copiamos el archivo seleccionado a la ubicación de tasks.db (reemplazando el existente)
+            shutil.copy2(open_path, DB_PATH)
+            
+            print(f"Base de datos importada correctamente desde: {open_path}")
+
+            return json.dumps({
+                "status": "success",
+                "message": f"Base de datos importada correctamente desde:\n{open_path}\n\nLa aplicación se recargará para mostrar las nuevas tareas."
+            })
+
+        except Exception as e:
+            error_detail = traceback.format_exc()
+            print("ERROR completo al importar:\n" + error_detail)
+            return json.dumps({
+                "status": "error",
+                "message": f"Error durante la importación:\n{str(e)}"
+            })
+
+    def close_app(self):
+        """Cierra la aplicación"""
+        print("Solicitud de cierre de aplicación recibida.")
+        try:
+            if webview.windows:
+                webview.windows[0].destroy()
+            return json.dumps({"status": "success"})
+        except Exception as e:
+            print(f"Error al cerrar la aplicación: {e}")
+            return json.dumps({"status": "error", "message": str(e)})
 
 if __name__ == '__main__':
     api = Api()
