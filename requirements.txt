@@ -1,7 +1,1 @@
-Flask
-flask-sqlalchemy
-flask-marshmallow
-marshmallow-sqlalchemy
-pymysql
-
 pywebview
