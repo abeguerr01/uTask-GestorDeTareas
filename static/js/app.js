@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectColor = document.getElementById('tar-color-select');
     const btnCerrar = document.getElementById('btn-cerrar');
 
-    // Event listener para el botón de cerrar
+    // Event listener
     if (btnCerrar) {
         btnCerrar.addEventListener('click', async () => {
             if (confirm('¿Estás seguro de que quieres cerrar la aplicación?')) {
@@ -46,9 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contenedorTareas.innerHTML = '';
 
             tasks.forEach(task => {
-                // Usamos el color que viene de la base de datos
-                // Si la DB no lo proporciona (por tareas antiguas), podemos usar un default
-                const taskColor = task.color || '#f9f9f9'; // ¡USAMOS EL COLOR DE LA TAREA!
+                const taskColor = task.color || '#f9f9f9';
                 crearTareaDiv(task.id, task.title, task.description, taskColor);
             });
 
@@ -72,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newTaskData = {
                 title: title,
                 description: description,
-                color: color // ¡ENVIAMOS EL COLOR A PYTHON!
+                color: color
             };
 
             const responseJson = await pywebview.api.add_task(newTaskData);
@@ -81,12 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.status === "success") {
                 console.log('Tarea añadida a la DB con éxito:', response.task);
-                // Usamos el color de la respuesta de Python (que es el mismo que enviamos)
                 crearTareaDiv(response.task.id, response.task.title, response.task.description, response.task.color);
 
                 inputTitulo.value = '';
                 inputDescripcion.value = '';
-                selectColor.value = '#f9f9f9'; // Resetear color
+                selectColor.value = '#f9f9f9';
             } else {
                 alert('Error al añadir tarea: ' + response.message);
                 console.error('Error al añadir tarea:', response.message);

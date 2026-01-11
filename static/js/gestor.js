@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputDescripcion = document.getElementById('tar-desc');
     const selectColor = document.getElementById('tar-color-select');
 
-    // 1. Cargar tareas guardadas al inicio
+    // Cargar tareas guardadas al inicio
     const tareasGuardadas = JSON.parse(localStorage.getItem('tareas')) || [];
     tareasGuardadas.forEach(({ id, titulo, descripcion, color }) => {
         crearTarea(titulo, descripcion, color, id);
     });
 
-    // 2. Añadir nueva tarea al hacer clic en el botón "Añadir"
+    // Añadir nueva tarea al hacer clic en el botón "Añadir"
     boton.addEventListener('click', () => {
         const titulo = inputTitulo.value.trim();
         const descripcion = inputDescripcion.value.trim();
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             let nombref = nombre
-            const userJsonFormattedString = JSON.stringify(userData, null, 2); // Indentación de 2 espacios
+            const userJsonFormattedString = JSON.stringify(userData, null, 2);
             const userOutputFilename = 'saves/'+ nombref +'.json';
 
         } else {
@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             descripcion.style.color = 'black';
         }
         
-        // CAMBIO AQUÍ: Primero añadimos el título y luego la descripción
         subdiv.appendChild(titulo);
         subdiv.appendChild(descripcion);
 
@@ -100,13 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
         botonEliminar.classList.add('btn-eliminar');
 
         // Lógica de clase de hover para el botón Eliminar Y EDITAR
-        if (colorTarea === '#e7e552') { // Nuevo amarillo
+        if (colorTarea === '#e7e552') {
             botonEliminar.classList.add('btn-hover-yellow-bg');
-            botonEditar.classList.add('btn-hover-yellow-bg'); // APLICADO A BOTÓN EDITAR
-        } else if (colorTarea === '#f9f9f9') { // Blanco
+            botonEditar.classList.add('btn-hover-yellow-bg');
+        } else if (colorTarea === '#f9f9f9') {
             botonEliminar.classList.add('btn-hover-black-bg');
-            botonEditar.classList.add('btn-hover-black-bg'); // APLICADO A BOTÓN EDITAR
-            botonEditar.classList.add('btn-editar-blanco'); // Clase adicional para el hover
+            botonEditar.classList.add('btn-hover-black-bg');
+            botonEditar.classList.add('btn-editar-blanco');
         }
 
         // Event listener para el botón Eliminar
@@ -211,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Lógica para IMPORTAR tareas ---
     importBtn.addEventListener('click', () => {
-        importFileInput.click(); // Dispara el click en el input de tipo file oculto
+        importFileInput.click();
     });
 
     importFileInput.addEventListener('change', (event) => {
@@ -232,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Sobrescribe las tareas existentes en localStorage con las importadas
-                // ¡Importante!: Usa la misma clave 'tareas' que usa gestor.js
                 localStorage.setItem('tareas', JSON.stringify(importedTasks));
 
                 // Limpiar el valor del input file para permitir la misma selección de archivo de nuevo

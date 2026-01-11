@@ -7,7 +7,6 @@ import traceback
 from tkinter import filedialog
 import tkinter as tk
 
-# Ruta de la base de datos
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'tasks.db')
 
 class Api:
@@ -16,11 +15,11 @@ class Api:
 
     def init_db(self):
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-        conn = sqlite3.connect(DB_PATH) # Conexión a la base de datos SQLite mediante su ruta
-        cursor = conn.cursor() # Crear un cursor para ejecutar comandos SQL
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS tasks (
-                id INTEGER PRIMARY KEY AUTOINCREMENT, -- ¡CORRECCIÓN AQUÍ! Era 'PRIMARYORY KEY'
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 description TEXT,
                 color TEXT DEFAULT '#f9f9f9'
@@ -104,11 +103,9 @@ class Api:
         print("Solicitud de exportación de base de datos recibida.")
         
         try:
-            # Crear una ventana raíz oculta para tkinter
             root = tk.Tk()
-            root.withdraw()  # Ocultar la ventana principal
+            root.withdraw()
             
-            # Diálogo de GUARDAR archivo
             save_path = filedialog.asksaveasfilename(
                 defaultextension=".db",
                 filetypes=[
@@ -120,9 +117,8 @@ class Api:
                 title="Guardar copia de seguridad"
             )
             
-            root.destroy()  # Cerrar la ventana raíz
+            root.destroy()
 
-            # Si se cancela, save_path será una cadena vacía
             if not save_path:
                 print("Exportación cancelada por el usuario")
                 return json.dumps({
@@ -132,7 +128,6 @@ class Api:
 
             print(f"Guardando en: {save_path}")
             
-            # Copiamos la base de datos
             shutil.copy2(DB_PATH, save_path)
 
             return json.dumps({
@@ -152,11 +147,9 @@ class Api:
         print("Solicitud de importación de base de datos recibida.")
         
         try:
-            # Crear una ventana raíz oculta para tkinter
             root = tk.Tk()
-            root.withdraw()  # Ocultar la ventana principal
+            root.withdraw()
             
-            # Diálogo de ABRIR archivo
             open_path = filedialog.askopenfilename(
                 filetypes=[
                     ("Base de datos SQLite", "*.db"),
@@ -166,9 +159,8 @@ class Api:
                 title="Seleccionar archivo de base de datos para importar"
             )
             
-            root.destroy()  # Cerrar la ventana raíz
+            root.destroy()
 
-            # Si se cancela, open_path será una cadena vacía
             if not open_path:
                 print("Importación cancelada por el usuario")
                 return json.dumps({
@@ -178,14 +170,12 @@ class Api:
 
             print(f"Importando desde: {open_path}")
             
-            # Verificamos que el archivo existe
             if not os.path.exists(open_path):
                 return json.dumps({
                     "status": "error",
                     "message": f"El archivo no existe: {open_path}"
                 })
             
-            # Copiamos el archivo seleccionado a la ubicación de tasks.db (reemplazando el existente)
             shutil.copy2(open_path, DB_PATH)
             
             print(f"Base de datos importada correctamente desde: {open_path}")
@@ -204,7 +194,6 @@ class Api:
             })
 
     def close_app(self):
-        """Cierra la aplicación"""
         print("Solicitud de cierre de aplicación recibida.")
         try:
             if webview.windows:

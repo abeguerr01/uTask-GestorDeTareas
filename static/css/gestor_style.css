@@ -26,8 +26,8 @@ header {
     right: 0;
     z-index: 1000;
 
-    display: flex; /* <-- ¡ESTO ES CLAVE! */
-    justify-content: space-between; /* <-- ¡ESTO ES CLAVE! */
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 header a {
@@ -164,47 +164,42 @@ form {
     word-wrap: break-word;
 }
 
-/* Contenedor de los botones dentro de la tarea */
 .button-container {
     display: flex;
-    gap: 10px; /* Espacio entre los botones */
+    gap: 10px;
     margin-top: 10px;
 }
 
-/* Estilos para el botón Editar (MISMO FORMATO QUE ELIMINAR) */
 .btn-editar {
-    background-color: white; /* Fondo blanco */
-    border: solid 1px black; /* Borde negro */
-    border-radius: 2cm; /* Bordes redondeados */
-    color: black; /* Texto negro */
-    padding: 10px; /* Espaciado interno */
-    text-align: center; /* Centrar texto */
-    flex-grow: 1; /* Crecer en el contenedor */
-    cursor: pointer; /* Cambiar cursor al pasar el mouse */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Transición suave */
+    background-color: white;
+    border: solid 1px black;
+    border-radius: 2cm;
+    color: black;
+    padding: 10px;
+    text-align: center;
+    flex-grow: 1;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 .btn-editar.btn-hover-black-bg:hover {
     background-color: black;
     color: white;
     border: solid 1px white;
 }
-/* Hover para el botón Editar cuando el fondo de la tarea es blanco */
 .btn-editar-blanco:hover {
-    background-color: black; /* Fondo negro en hover */
-    color: white; /* Texto blanco en hover */
-    border: solid 1px black; /* Borde negro en hover */
+    background-color: black;
+    color: white;
+    border: solid 1px black;
 }
 
-/* Hover para el botón Editar en otros casos */
 .btn-editar:hover {
-    background-color: var(--tarea-color-fondo, #f9f9f9); /* Color de fondo en hover */
-    color: white; /* Texto blanco en hover */
-    border: solid 1px white; /* Borde blanco en hover */
+    background-color: var(--tarea-color-fondo, #f9f9f9);
+    color: white;
+    border: solid 1px white;
 }
 
-/* Estilos para el botón Guardar (cuando el botón de editar cambia a Guardar) */
 .btn-guardar {
-    background-color: #3cb371; /* Verde */
+    background-color: #3cb371;
     border: solid 1px #ffffff;
     border-radius: 2cm;
     color: #ffffff;
@@ -220,7 +215,6 @@ form {
     border-color: #ffffff;
 }
 
-/* Estilos para el botón Eliminar */
 .btn-eliminar {
     background-color: white;
     border: solid 1px black;
@@ -249,18 +243,16 @@ form {
     border: solid 1px white;
 }
 
-/* Indicador visual para elementos editables (título y descripción) */
 [contenteditable="true"] {
-    outline: 2px dashed #007bff; /* Borde azul punteado */
+    outline: 2px dashed #007bff;
     padding: 2px;
-    min-height: 1em; /* Asegura una altura mínima para elementos editables vacíos */
-    box-sizing: border-box; /* Para que el padding y el borde no aumenten el tamaño */
+    min-height: 1em;
+    box-sizing: border-box;
 }
-/* Botones de Importar y Exportar */
 .imp-exp {
     display: flex;
     gap: 10px;
-    margin-left: auto; /* Empuja los botones hacia la derecha */
+    margin-left: auto;
     align-items: center;
 }
 .imp-btn,
@@ -274,7 +266,7 @@ form {
     transition: background-color 0.3s ease, transform 0.3s ease;
     text-align: center;
     font-size: 14px;
-    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    white-space: nowrap;
 }
 
 .imp-btn:hover,
